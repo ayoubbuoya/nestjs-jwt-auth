@@ -27,7 +27,8 @@ export class AuthService {
   }
 
   async register(username: string, password: string) {
-    return await this.usersService.create(username, password);
+    const user = { username, password };
+    return await this.usersService.create(user);
   }
 
   async getAllUsers() {
