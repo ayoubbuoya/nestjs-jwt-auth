@@ -14,6 +14,19 @@ export class AuthController {
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
 
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('register')
+  async signUp(@Body() signUpDto: Record<string, any>) {
+    return this.authService.register(signUpDto.username, signUpDto.password);
+  }
+
+  @Public()
+  @Get('users')
+  async getAllUsers() {
+    return await this.authService.getAllUsers();
+  }
+
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

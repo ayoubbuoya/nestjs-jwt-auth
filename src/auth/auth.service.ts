@@ -25,4 +25,12 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async register(username: string, password: string) {
+    return await this.usersService.create(username, password);
+  }
+
+  async getAllUsers() {
+    return await this.usersService.findAll();
+  }
 }
