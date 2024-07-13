@@ -24,12 +24,6 @@ export class AuthController {
     return this.authService.register(user);
   }
 
-  @Public()
-  @Get('users')
-  async getAllUsers() {
-    return await this.authService.getAllUsers();
-  }
-
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
