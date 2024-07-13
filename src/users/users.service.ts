@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'schemas/user.schema';
-import { CreateUserDto } from './dto/user.dto';
+import { RegisterUserDto } from './dto/user.dto';
 
 export type user = any;
 
@@ -10,15 +10,19 @@ export type user = any;
 export class UsersService {
   constructor(@InjectModel(User.name) private userModal: Model<User>) {}
 
-  async findOne(username: string): Promise<user | undefined> {
-    return this.userModal.findOne({ username }).exec();
+  async findOne(email: string): Promise<user | undefined> {
+    return this.userModal.findOne({ email }).exec();
   }
 
   async findAll(): Promise<User[]> {
     return this.userModal.find().exec();
   }
 
-  async create(user: CreateUserDto): Promise<User> {
+  async create(user: RegisterUserDto): Promise<User> {
+    if (!user.username) {
+      user.username = user.email.split('@')[0];
+    }
+    console.log("User To Save In DB: ", user);
     const createdUser = new this.userModal(user);
     return createdUser.save();
   }

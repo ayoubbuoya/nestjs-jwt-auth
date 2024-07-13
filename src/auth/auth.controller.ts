@@ -2,7 +2,7 @@ import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { Body, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './constants';
-import { CreateUserDto } from 'src/users/dto/user.dto';
+import { LoginUserDto, RegisterUserDto } from 'src/users/dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,15 +11,17 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() signInDto: CreateUserDto) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  async signIn(@Body() userDto: LoginUserDto) {
+    return this.authService.signIn(userDto.email, userDto.password);
   }
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('register')
-  async signUp(@Body() signUpDto: CreateUserDto) {
-    return this.authService.register(signUpDto.username, signUpDto.password);
+  async signUp(@Body() userDto: RegisterUserDto) {
+    const user = userDto;
+    user.password = await this.authService.hashPassword(user.password);
+    return this.authService.register(user);
   }
 
   @Public()
