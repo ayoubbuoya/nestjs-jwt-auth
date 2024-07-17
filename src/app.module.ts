@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import authConfig from 'config/auth.config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { KycModule } from './kyc/kyc.module';
 import databaseConfig from 'config/database.config';
 
 @Module({
@@ -17,6 +18,7 @@ import databaseConfig from 'config/database.config';
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,
     UsersModule,
+    KycModule,
   ],
   controllers: [AppController],
   providers: [AppService],
